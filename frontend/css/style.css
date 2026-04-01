@@ -1,0 +1,263 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* VARIÁVEIS DO TEMA: Design mais neutro e elegante (Glassmorphism) */
+:root {
+    --primary-color: #ffffff;
+    --accent-color: rgba(255, 255, 255, 0.2);
+    --text-color: rgba(255, 255, 255, 0.95);
+    /* Cores das transações ajustadas para não chocar com a foto */
+    --success-color: #2ecc71; 
+    --danger-color: #ff4757; 
+    
+    /* Cores dos vidros */
+    --card-bg: rgba(15, 15, 15, 0.55); 
+    --card-border: rgba(255, 255, 255, 0.1);
+}
+
+body {
+    background-image: url('../img/background.png');
+    /* O background-color preto junto com blend-mode escurece sutilmente 
+       qualquer imagem pra destacar MUITO o texto branco */
+    background-color: rgba(0, 0, 0, 0.4);
+    background-blend-mode: overlay; 
+    
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    color: var(--text-color);
+    padding: 20px;
+}
+
+/* ================== CABEÇALHOS ================== */
+h1 {
+    color: var(--primary-color);
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+    text-shadow: 0px 2px 10px rgba(0, 0, 0, 0.8);
+}
+
+p {
+    margin-bottom: 20px;
+    text-shadow: 0px 1px 5px rgba(0, 0, 0, 0.8);
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.container {
+    max-width: 650px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* ================== CARTÕES (GLASS) ================== */
+.card {
+    background-color: var(--card-bg);
+    backdrop-filter: blur(14px); /* Embaça o background.png atrás do card */
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid var(--card-border);
+    padding: 25px;
+    border-radius: 16px;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.card h2 {
+    margin-bottom: 15px;
+    font-size: 20px;
+    font-weight: 500;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 10px;
+    color: var(--primary-color);
+}
+
+/* ================== RESUMO FINANCEIRO ================== */
+.resumo-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 15px 20px;
+}
+
+.resumo-box {
+    flex: 1;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.25);
+    padding: 15px 10px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.03);
+}
+
+.resumo-box h3 {
+    font-size: 12px;
+    font-weight: 500;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: rgba(255,255,255,0.6);
+}
+
+.resumo-box p {
+    font-size: 22px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.total-receitas { border-bottom: 3px solid var(--success-color); }
+.total-despesas { border-bottom: 3px solid var(--danger-color); }
+.saldo-atual    { border-bottom: 3px solid #4da6ff; }
+
+/* ================== FORMULÁRIO ================== */
+.form label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 13px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.7);
+    letter-spacing: 0.5px;
+}
+
+.form input, .form select {
+    width: 100%;
+    margin-bottom: 18px;
+    padding: 12px;
+    font-size: 15px;
+    background: rgba(0, 0, 0, 0.35);
+    color: white;
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.form select option {
+    background-color: #1a1a1a;
+    color: white;
+}
+
+.form input:focus, .form select:focus {
+    border-color: rgba(255, 255, 255, 0.6);
+    background: rgba(0, 0, 0, 0.6);
+    box-shadow: 0 0 0 2px rgba(255,255,255,0.1);
+}
+
+.form input::placeholder { color: rgba(255, 255, 255, 0.3); }
+
+/* ================== BOTOES ================== */
+button[type="submit"] {
+    display: block;
+    width: 100%;
+    margin: 5px auto 0;
+    padding: 14px 20px;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    cursor: pointer;
+    background-color: var(--primary-color);
+    color: #000;
+    border: none;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+button[type="submit"]:hover {
+    background-color: #e0e0e0;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+button[type="submit"]:active { transform: translateY(0); }
+
+/* Botão de Logout Especial */
+.btn-logout {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 8px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    font-weight: 500;
+    backdrop-filter: blur(5px);
+    transition: all 0.3s ease;
+}
+
+.btn-logout:hover {
+    background-color: rgba(255, 71, 87, 0.8);
+    border-color: rgba(255, 71, 87, 1);
+}
+
+/* Links (Tela de Login) */
+a {
+    color: #4da6ff;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+a:hover { color: #80bfff; text-decoration: underline; }
+
+/* ================== LISTA DE TRANSAÇÕES ================== */
+.lista {
+    list-style-type: none;
+    max-height: 320px;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+.lista::-webkit-scrollbar { width: 6px; }
+.lista::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); border-radius: 5px; }
+.lista::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 5px; }
+
+.lista li {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    padding: 12px 18px;
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-left-width: 4px;
+    transition: all 0.2s ease;
+}
+
+.lista li:hover {
+    background: rgba(0, 0, 0, 0.4);
+    transform: translateX(2px);
+}
+
+.lista li.receita { border-left-color: var(--success-color); }
+.lista li.despesa { border-left-color: var(--danger-color); }
+
+.item-info { display: flex; flex-direction: column; }
+.item-desc { font-weight: 600; font-size: 15px; margin-bottom: 4px; }
+.item-meta {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.item-valor { font-weight: bold; font-size: 16px; }
+
+.btn-excluir {
+    background: rgba(255, 71, 87, 0.1);
+    color: var(--danger-color);
+    border: 1px solid rgba(255, 71, 87, 0.15);
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+    padding: 6px 10px;
+    margin-left: 15px;
+    transition: all 0.2s ease;
+}
+.btn-excluir:hover { background: rgba(255, 71, 87, 0.8); color: white; }
+
+/* Responsivo Smartphone */
+@media (max-width: 500px) {
+    .resumo-container { flex-direction: column; }
+    h1 { font-size: 24px; }
+}

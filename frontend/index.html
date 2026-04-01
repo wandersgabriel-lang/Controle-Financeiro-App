@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle Financeiro</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div style="display: flex; justify-content: space-between; align-items: center; max-width: 800px; margin: 0 auto; padding: 0 15px;">
+        <div>
+            <h1>Controle Financeiro</h1>
+            <p>Acompanhe suas receitas e despesas com praticidade.</p>
+        </div>
+        <button id="btnLogout" class="btn-logout">Sair da Conta</button>
+    </div>
+    
+    <div class="container">
+        <!-- Resumo Financeiro -->
+        <div class="card resumo-container">
+            <div class="resumo-box total-receitas">
+                <h3>Receitas</h3>
+                <p id="totalReceitas">R$ 0,00</p>
+            </div>
+            <div class="resumo-box total-despesas">
+                <h3>Despesas</h3>
+                <p id="totalDespesas">R$ 0,00</p>
+            </div>
+            <div class="resumo-box saldo-atual">
+                <h3>Saldo Atual</h3>
+                <p id="saldoAtual">R$ 0,00</p>
+            </div>
+        </div>
+
+        <!-- Formulário Nova Transação -->
+        <div class="card formulario">
+            <h2>Nova Transação</h2>
+            <form id="form" class="form">
+                <label for="descricao">Descrição:</label>
+                <input type="text" id="descricao" placeholder="Ex: Salário, Aluguel, Mercado" required>
+                
+                <label for="valor">Valor (R$):</label>
+                <input type="number" id="valor" step="0.01" min="0.01" placeholder="0.00" required>
+                
+                <label for="tipo">Tipo da Transação:</label>
+                <select id="tipo" required>
+                    <option value="receita">Receita (Entrada via Salário/Rendimento)</option>
+                    <option value="despesa">Despesa (Gasto)</option>
+                </select>
+
+                <label for="categoria">Categoria:</label>
+                <select id="categoria" required>
+                    <option value="">Carregando banco...</option>
+                </select>
+
+                <label for="data">Data:</label>
+                <input type="date" id="data" required>
+                
+                <button type="submit">Adicionar Transação</button>
+            </form>
+        </div>
+
+        <!-- Histórico de Transações -->
+        <div class="card historico">
+            <h2>Histórico de Transações</h2>
+            <ul id="listaTransacoes" class="lista">
+                <!-- Itens injetados via JS -->
+            </ul>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>

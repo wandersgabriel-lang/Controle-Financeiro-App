@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Controle Financeiro</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <h1>Controle Financeiro</h1>
+    <p>Acesse sua conta para ver suas finanças.</p>
+    
+    <div class="container">
+        <div class="card" id="loginCard">
+            <h2>Fazer Login</h2>
+            <form id="formLogin" class="form">
+                <label for="emailLogin">E-mail:</label>
+                <input type="email" id="emailLogin" placeholder="Seu email" required>
+                
+                <label for="senhaLogin">Senha:</label>
+                <input type="password" id="senhaLogin" placeholder="Sua senha secreta" required>
+                
+                <button type="submit">Entrar</button>
+            </form>
+            <p style="text-align:center; margin-top:15px; font-size: 0.9em;">
+                Ainda não tem conta? <a href="#" id="linkCadastro">Cadastre-se</a>
+            </p>
+        </div>
+
+        <div class="card" id="registroCard" style="display: none;">
+            <h2>Criar Conta</h2>
+            <form id="formRegistro" class="form">
+                <label for="nomeRegistro">Nome Completo:</label>
+                <input type="text" id="nomeRegistro" placeholder="João da Silva" required>
+
+                <label for="emailRegistro">E-mail:</label>
+                <input type="email" id="emailRegistro" placeholder="Seu email" required>
+                
+                <label for="senhaRegistro">Criar Senha:</label>
+                <input type="password" id="senhaRegistro" placeholder="Uma senha forte..." required>
+                
+                <button type="submit">Cadastrar</button>
+            </form>
+            <p style="text-align:center; margin-top:15px; font-size: 0.9em;">
+                Já possui conta? <a href="#" id="linkLogin">Fazer Login</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- Script de Autenticação Incorporado para Simplicidade -->
+    <script>
+        // Regra de Ouro: Se já estiver logado, foge pro painel!
+        if (localStorage.getItem('financas_token')) {
+            window.location.href = 'index.html';
+        }
+
+        const API_URL = '/api';
+        
+        // Elementos da UI
+        const formLogin = document.getElementById('formLogin');
+        const formRegistro = document.getElementById('formRegistro');
+        const loginCard = document.getElementById('loginCard');
+        const registroCard = document.getElementById('registroCard');
+
+        // Alternância de Telas
+        document.getElementById('linkCadastro').addEventListener('click', (e) => {
+            e.preventDefault();
+            loginCard.style.display = 'none';
+            registroCard.style.display = 'block';
+        });
+
+        document.getElementById('linkLogin').addEventListener('click', (e) => {
+            e.preventDefault();
+            registroCard.style.display = 'none';
+            loginCard.style.display = 'block';
+        });
+
+        // ================= Cadastro =================
+        formRegistro.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const dados = {
+                nome: document.getElementById('nomeRegistro').value,
+                email: document.getElementById('emailRegistro').value,
+                senha: document.getElementById('senhaRegistro').value
+            };
+
+            try {
+                const res = await fetch(`${API_URL}/registro`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(dados)
+                });
+                const responseData = await res.json();
+                
+                if (!res.ok) {
+                    alert('Erro: ' + responseData.erro);
+                } else {
+                    alert('Conta criada com Sucesso! Faça o login agora.');
+                    document.getElementById('linkLogin').click();
+                }
+            } catch (err) { alert('Falha ao conectar no servidor.'); }
+        });
+
+        // ================= Login =================
+        formLogin.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const dados = {
+                email: document.getElementById('emailLogin').value,
+                senha: document.getElementById('senhaLogin').value
+            };
+
+            try {
+                const res = await fetch(`${API_URL}/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(dados)
+                });
+                const responseData = await res.json();
+                
+                if (!res.ok) {
+                    alert('Erro no Login: ' + responseData.erro);
+                } else {
+                    // Magia: Salva o Token ("Crachá") no navegador
+                    localStorage.setItem('financas_token', responseData.token);
+                    localStorage.setItem('financas_user', JSON.stringify(responseData.user));
+                    
+                    // Transfere o usuário para o sistema!
+                    alert(`Bem vindo de volta, ${responseData.user.nome}!`);
+                    window.location.href = 'index.html';
+                }
+            } catch (err) { alert('Falha ao conectar no servidor.'); }
+        });
+    </script>
+</body>
+</html>
