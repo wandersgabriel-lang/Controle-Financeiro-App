@@ -7,43 +7,54 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <h1>Controle Financeiro</h1>
-    <p>Acesse sua conta para ver suas finanças.</p>
-    
-    <div class="container">
-        <div class="card" id="loginCard">
+    <div class="login-overlay">
+        <div class="auth-card" id="loginCard">
+            <h3 class="auth-title">Controle Financeiro</h3>
+            <p class="auth-subtitle">Acesse sua conta para ver suas finanças.</p>
             <h2>Fazer Login</h2>
-            <form id="formLogin" class="form">
-                <label for="emailLogin">E-mail:</label>
-                <input type="email" id="emailLogin" placeholder="Seu email" required>
+            <form id="formLogin" class="form" novalidate>
+                <div class="form-group">
+                    <label for="emailLogin">E-mail:</label>
+                    <input type="email" id="emailLogin" placeholder="Seu email" required>
+                </div>
                 
-                <label for="senhaLogin">Senha:</label>
-                <input type="password" id="senhaLogin" placeholder="Sua senha secreta" required>
+                <div class="form-group">
+                    <label for="senhaLogin">Senha:</label>
+                    <input type="password" id="senhaLogin" placeholder="Sua senha secreta" required>
+                </div>
                 
-                <button type="submit">Entrar</button>
+                <button type="submit" class="btn-primary">Entrar</button>
             </form>
-            <p style="text-align:center; margin-top:15px; font-size: 0.9em;">
-                Ainda não tem conta? <a href="#" id="linkCadastro">Cadastre-se</a>
-            </p>
+            <div class="auth-switch">
+                <p class="auth-note">Ainda não tem conta? <a href="#" id="linkCadastro" class="form-toggle-link">Cadastre-se</a></p>
+            </div>
         </div>
 
-        <div class="card" id="registroCard" style="display: none;">
+        <div class="auth-card" id="registroCard" style="display: none;">
+            <h3 class="auth-title">Controle Financeiro</h3>
+            <p class="auth-subtitle">Crie sua conta para começar.</p>
             <h2>Criar Conta</h2>
-            <form id="formRegistro" class="form">
-                <label for="nomeRegistro">Nome Completo:</label>
-                <input type="text" id="nomeRegistro" placeholder="João da Silva" required>
+            <form id="formRegistro" class="form" novalidate>
+                <div class="form-group">
+                    <label for="nomeRegistro">Nome Completo:</label>
+                    <input type="text" id="nomeRegistro" placeholder="João da Silva" required>
+                </div>
 
-                <label for="emailRegistro">E-mail:</label>
-                <input type="email" id="emailRegistro" placeholder="Seu email" required>
+                <div class="form-group">
+                    <label for="emailRegistro">E-mail:</label>
+                    <input type="email" id="emailRegistro" placeholder="Seu email" required>
+                </div>
                 
-                <label for="senhaRegistro">Criar Senha:</label>
-                <input type="password" id="senhaRegistro" placeholder="Uma senha forte..." required>
+                <div class="form-group">
+                    <label for="senhaRegistro">Criar Senha:</label>
+                    <input type="password" id="senhaRegistro" placeholder="Uma senha forte..." required>
+                </div>
                 
-                <button type="submit">Cadastrar</button>
+                <button type="submit" class="btn-primary">Cadastrar</button>
             </form>
-            <p style="text-align:center; margin-top:15px; font-size: 0.9em;">
-                Já possui conta? <a href="#" id="linkLogin">Fazer Login</a>
-            </p>
+            <div class="auth-switch">
+                <p class="auth-note">Já possui conta? <a href="#" id="linkLogin" class="form-toggle-link">Fazer Login</a></p>
+            </div>
         </div>
     </div>
 

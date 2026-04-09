@@ -146,14 +146,33 @@ app.get('/api/categorias', verificarAutenticacao, (req, res) => {
 });
 
 app.get('/api/transacoes', verificarAutenticacao, (req, res) => {
+    const limit = parseInt(req.query.limit) || 100;
+    const offset = parseInt(req.query.offset) || 0;
     const sql = `
         SELECT t.id, t.descricao, t.valor, t.tipo, t.data_transacao as data, c.nome_categoria as categoria
         FROM transactions t JOIN categories c ON t.categoria_id = c.id
         WHERE t.user_id = ? ORDER BY t.data_transacao DESC, t.id DESC
+        LIMIT ? OFFSET ?
     `;
-    db.all(sql, [req.userId], (err, rows) => {
+    db.all(sql, [req.userId, limit, offset], (err, rows) => {
         if (err) return res.status(500).json({ erro: err.message });
         res.json(rows);
+    });
+});
+
+app.get('/api/estatisticas', verificarAutenticacao, (req, res) => {
+    const sql = `SELECT tipo, COALESCE(SUM(valor), 0) as total FROM transactions WHERE user_id = ? GROUP BY tipo`;
+    db.all(sql, [req.userId], (err, rows) => {
+        if (err) return res.status(500).json({ erro: err.message });
+
+        let receitas = 0;
+        let despesas = 0;
+        rows.forEach(row => {
+            if (row.tipo === 'receita') receitas = row.total;
+            if (row.tipo === 'despesa') despesas = row.total;
+        });
+
+        res.json({ receitas, despesas, saldo: receitas - despesas });
     });
 });
 

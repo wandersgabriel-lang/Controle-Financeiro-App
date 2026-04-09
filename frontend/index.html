@@ -8,16 +8,28 @@
 </head>
 <body>
     <div style="display: flex; justify-content: space-between; align-items: center; max-width: 800px; margin: 0 auto; padding: 0 15px;">
-        <div>
+        <div class="header" style="text-align: left; padding: 0;">
+            <p class="header-kicker">Resumo e Lançamentos</p>
             <h1>Controle Financeiro</h1>
-            <p>Acompanhe suas receitas e despesas com praticidade.</p>
+            <p class="header-subtitle" style="text-align: left; margin: 0;">Acompanhe suas receitas e despesas com praticidade.</p>
         </div>
         <button id="btnLogout" class="btn-logout">Sair da Conta</button>
     </div>
+
+    <!-- Menu de Navegação Horizontal -->
+    <div class="menu-container">
+        <nav class="menu">
+            <ul>
+                <li><a href="#" id="btnInicio" class="ativo"><i class="icon">🏠</i> Início</a></li>
+                <li><a href="#" id="btnLancamentos"><i class="icon">💵</i> Lançamentos</a></li>
+                <li><a href="#" id="btnExtrato"><i class="icon">📜</i> Extrato</a></li>
+            </ul>
+        </nav>
+    </div>
     
-    <div class="container">
-        <!-- Resumo Financeiro -->
-        <div class="card resumo-container">
+    <div class="container" id="mainContainer">
+        <!-- Resumo Financeiro (Painel Inicial) -->
+        <div id="boxInicio" class="card resumo-container">
             <div class="resumo-box total-receitas">
                 <h3>Receitas</h3>
                 <p id="totalReceitas">R$ 0,00</p>
@@ -33,35 +45,45 @@
         </div>
 
         <!-- Formulário Nova Transação -->
-        <div class="card formulario">
+        <div id="boxLancamentos" class="card formulario panel-hidden">
             <h2>Nova Transação</h2>
-            <form id="form" class="form">
-                <label for="descricao">Descrição:</label>
-                <input type="text" id="descricao" placeholder="Ex: Salário, Aluguel, Mercado" required>
+            <form id="form" class="form" novalidate>
+                <div class="form-group">
+                    <label for="descricao">Descrição:</label>
+                    <input type="text" id="descricao" placeholder="Ex: Salário, Aluguel, Mercado" required>
+                </div>
                 
-                <label for="valor">Valor (R$):</label>
-                <input type="number" id="valor" step="0.01" min="0.01" placeholder="0.00" required>
+                <div class="form-group">
+                    <label for="valor">Valor (R$):</label>
+                    <input type="number" id="valor" step="0.01" min="0.01" placeholder="0.00" required>
+                </div>
                 
-                <label for="tipo">Tipo da Transação:</label>
-                <select id="tipo" required>
-                    <option value="receita">Receita (Entrada via Salário/Rendimento)</option>
-                    <option value="despesa">Despesa (Gasto)</option>
-                </select>
+                <div class="form-group">
+                    <label for="tipo">Tipo da Transação:</label>
+                    <select id="tipo" required>
+                        <option value="receita">Receita (Entrada via Salário/Rendimento)</option>
+                        <option value="despesa">Despesa (Gasto)</option>
+                    </select>
+                </div>
 
-                <label for="categoria">Categoria:</label>
-                <select id="categoria" required>
-                    <option value="">Carregando banco...</option>
-                </select>
+                <div class="form-group">
+                    <label for="categoria">Categoria:</label>
+                    <select id="categoria" required>
+                        <option value="">Carregando banco...</option>
+                    </select>
+                </div>
 
-                <label for="data">Data:</label>
-                <input type="date" id="data" required>
+                <div class="form-group">
+                    <label for="data">Data:</label>
+                    <input type="date" id="data" required>
+                </div>
                 
-                <button type="submit">Adicionar Transação</button>
+                <button type="submit" class="btn-primary">Adicionar Transação</button>
             </form>
         </div>
 
         <!-- Histórico de Transações -->
-        <div class="card historico">
+        <div id="boxExtrato" class="card historico panel-hidden">
             <h2>Histórico de Transações</h2>
             <ul id="listaTransacoes" class="lista">
                 <!-- Itens injetados via JS -->

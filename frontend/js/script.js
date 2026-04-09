@@ -26,6 +26,27 @@ const totalReceitas = document.getElementById('totalReceitas');
 const totalDespesas = document.getElementById('totalDespesas');
 const btnLogout = document.getElementById('btnLogout'); // Objeto novo criado no HTML
 
+// Navegação em abas
+const btnInicio = document.getElementById('btnInicio');
+const btnLancamentos = document.getElementById('btnLancamentos');
+const btnExtrato = document.getElementById('btnExtrato');
+const boxInicio = document.getElementById('boxInicio');
+const boxLancamentos = document.getElementById('boxLancamentos');
+const boxExtrato = document.getElementById('boxExtrato');
+
+const navLinks = [btnInicio, btnLancamentos, btnExtrato];
+const navBoxes = [boxInicio, boxLancamentos, boxExtrato];
+
+function abrirAba(btnAtivo, boxAtiva) {
+    navLinks.forEach(l => l?.classList.remove('ativo'));
+    navBoxes.forEach(b => b?.classList.add('panel-hidden'));
+    btnAtivo?.classList.add('ativo');
+    boxAtiva?.classList.remove('panel-hidden');
+}
+
+btnInicio?.addEventListener('click', (e) => { e.preventDefault(); abrirAba(btnInicio, boxInicio); carregarEstatisticas(); });
+btnLancamentos?.addEventListener('click', (e) => { e.preventDefault(); abrirAba(btnLancamentos, boxLancamentos); });
+btnExtrato?.addEventListener('click', (e) => { e.preventDefault(); abrirAba(btnExtrato, boxExtrato); carregarTransacoes(); });
 // Lógica para deslogar
 if (btnLogout) {
     btnLogout.addEventListener('click', () => {
@@ -78,14 +99,32 @@ tipo.addEventListener('change', atualizarSelectCategorias);
 
 const carregarTransacoes = async () => {
     try {
-        const response = await fetch(`${API_URL}/transacoes`, { headers: headersComAutenticacao });
+        const response = await fetch(`${API_URL}/transacoes?limit=50&offset=0`, { headers: headersComAutenticacao });
         if (response.status === 401) return forcarLogout();
         transactions = await response.json();
-        renderizarTela();
+        renderizarLista();
     } catch (error) {
         console.error('Erro ao buscar as transações:', error);
     }
 };
+
+const carregarEstatisticas = async () => {
+    try {
+        const response = await fetch(`${API_URL}/estatisticas`, { headers: headersComAutenticacao });
+        if (response.status === 401) return forcarLogout();
+        const est = await response.json();
+        
+        saldoAtual.innerText = formatarMoeda(est.saldo);
+        totalReceitas.innerText = formatarMoeda(est.receitas);
+        totalDespesas.innerText = formatarMoeda(est.despesas);
+
+        if (est.saldo < 0) saldoAtual.style.color = '#ff4f4f';
+        else if (est.saldo > 0) saldoAtual.style.color = '#00f529';
+        else saldoAtual.style.color = 'white';
+    } catch(err) {
+        console.error('Erro estatísticas', err);
+    }
+}
 
 const salvarTransacaoNoBanco = async (transaction) => {
     try {
@@ -95,7 +134,8 @@ const salvarTransacaoNoBanco = async (transaction) => {
             body: JSON.stringify(transaction) 
         });
         if (response.status === 401) return forcarLogout();
-        await carregarTransacoes(); 
+        // Redireciona visualmente pro Extrato pra ver o resultado instantaneamente
+        btnExtrato?.click(); 
     } catch (error) {
         alert('Erro ao salvar no banco!');
     }
@@ -139,24 +179,9 @@ const addTransactionDOM = (transaction) => {
     listaTransacoes.appendChild(li);
 };
 
-const updateValues = () => {
-    const receitasTotal = transactions.filter(t => t.tipo === 'receita').reduce((acc, t) => acc + t.valor, 0);
-    const despesasTotal = transactions.filter(t => t.tipo === 'despesa').reduce((acc, t) => acc + t.valor, 0);
-    const total = receitasTotal - despesasTotal;
-
-    saldoAtual.innerText = formatarMoeda(total);
-    totalReceitas.innerText = formatarMoeda(receitasTotal);
-    totalDespesas.innerText = formatarMoeda(despesasTotal);
-
-    if (total < 0) saldoAtual.style.color = '#ff4c4c';
-    else if (total > 0) saldoAtual.style.color = '#00f529';
-    else saldoAtual.style.color = 'white';
-};
-
-const renderizarTela = () => {
+const renderizarLista = () => {
     listaTransacoes.innerHTML = '';
     transactions.forEach(addTransactionDOM);
-    updateValues();
 };
 
 // ================= EVENTOS =================
@@ -180,6 +205,6 @@ form.addEventListener('submit', (e) => {
 
 const init = async () => {
     await carregarCategorias(); 
-    await carregarTransacoes(); 
+    await carregarEstatisticas();
 };
 init();
